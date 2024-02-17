@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Моё портфолио</title>
+    </head>
+    <style>
+        body {
+            background-color:rgb(20,20,20);
+            color:whitesmoke;
+        }
+        .first-column {
+            display: inline;
+            max-width: 600px;
+            max-height: 600px;
+            object-fit: contain;
+            float: inline-start;
+        }
+
+        .second-column {
+            display: inline;
+            max-width: 50%;
+            margin-top: 0%;
+            margin-left: 5%;
+            margin-right: 5%;
+            float: inline-start;
+        }
+        .third-column {
+            display: inline;
+            max-width: 50%;
+            margin-top: 0%;
+            margin-left: 5%;
+            margin-right: 5%;
+            float: inline-start;
+        }
+        .second-column a {
+            color: white;
+            text-decoration: none;
+        }
+        .second-column a:hover {
+            color: rgb(141, 141, 141);
+        }
+    </style>
+    <body>
+        <center><h1>Портфолио NVORON</h1></center>
+        <div>
+            <div class = "first-column">
+                <img src="https://avatars.githubusercontent.com/u/85389911?v=4">
+            </div>
+            <div class = "second-column">
+                <h2>Проекты:</h2>
+                {% for project in projects %}
+                    <div>
+                        <h3><a href = "{{ project.link }}" >{{ project.title }}</a></h3>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class = "third-column">
+                <center><h2>Новый проект?</h2></center>
+                <form method="post" action="/add_project">
+                    <label for="ftitle">Название проекта:</label><br>
+                    <input type="text" id="ftitle" name="title"><br>
+                    <label for="flink">Ссылка на проект:</label><br>
+                    <input type="text" id="flink" name="link">
+                    <button type="submit">Добавить проект</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
