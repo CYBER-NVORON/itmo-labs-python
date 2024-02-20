@@ -49,11 +49,18 @@
             </div>
             <div class = "second-column">
                 <h2>Проекты:</h2>
-                {% for project in projects %}
+                {% if not is_empty %}
+                    {% for project in projects %}
+                        <div>
+                            <h3><a href = "{{ project.link }}" >{{ project.title }}</a></h3>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                {% if is_empty %}
                     <div>
-                        <h3><a href = "{{ project.link }}" >{{ project.title }}</a></h3>
+                        <h3>Похоже, что проектов нет(</h3>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
             <div class = "third-column">
                 <center><h2>Новый проект?</h2></center>
@@ -63,6 +70,9 @@
                     <label for="flink">Ссылка на проект:</label><br>
                     <input type="text" id="flink" name="link">
                     <button type="submit">Добавить проект</button>
+                </form>
+                <form method="post" action="/delete_projects">
+                    <button type="submit">Удалить все проекты!</button>
                 </form>
             </div>
         </div>

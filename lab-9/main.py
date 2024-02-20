@@ -13,24 +13,32 @@ class Project(db.Model):
     link = db.Column(db.String(512), nullable=False)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Title %r>' % self.title
     
 @app.route('/', methods=['GET'])
 def hello():
-    return flask.render_template('index.html', projects = Project.query.all())
+    projects = Project.query.all()
+    if len(projects) > 0:
+        return flask.render_template('index.html', projects = projects, is_empty = False)
+    else:
+        return flask.render_template('index.html', projects = projects, is_empty = True)
 
 @app.route('/add_project', methods=['POST'])
 def add_project():
     title = flask.request.form['title']
     link = flask.request.form['link']
-    # if not link.startswith("https://"):
-    #     link = "https://" + link
 
     if validators.url(link):
-        print(title, link)
         db.session.add(Project(title = title, link = link))
         db.session.commit()
     
+    return flask.redirect(flask.url_for('hello'))
+
+@app.route('/delete_projects', methods=['POST'])
+def delete_projects():
+    db.drop_all()
+    db.create_all()
+    db.session.commit()
     return flask.redirect(flask.url_for('hello'))
 
 with app.app_context():
@@ -42,5 +50,5 @@ with app.app_context():
     db.session.commit()
 
 if __name__ == "__main__":
-    print("Пример ввода: Название - itmo-labs-python  Ссылка - https://github.com/CYBER-NVORON/itmo-labs-python")
+    print("Пример ввода нового проекта: Название - itmo-labs-python  Ссылка - https://github.com/CYBER-NVORON/itmo-labs-python")
     app.run(host="0.0.0.0")
