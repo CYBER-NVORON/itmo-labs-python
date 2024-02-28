@@ -21,7 +21,7 @@ class Voice_assistant():
             for voice in self.voices:
                 if voice.name == 'Milena':
                     self.tts.setProperty('voice', voice.id)
-            self.model = vosk.Model(os.getcwd() + '/model_small')
+            self.model = vosk.Model(os.getcwd() + '/model_small') # Лучше использовать нормальную модель, но она дольше обрабатывается и много весит =(
             self.record = vosk.KaldiRecognizer(self.model, 16000)
             self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
             self.stream.start_stream()
@@ -34,7 +34,7 @@ class Voice_assistant():
             for voice in self.voices:
                 if voice.name == 'Microsoft Zira Desktop - English (United States)':
                     self.tts.setProperty('voice', voice.id)
-            self.record = vosk.KaldiRecognizer(vosk.Model('model_small'), 16000)
+            self.record = vosk.KaldiRecognizer(vosk.Model(os.getcwd() + '/model_small'), 16000)
             self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
             self.stream.start_stream()
 
