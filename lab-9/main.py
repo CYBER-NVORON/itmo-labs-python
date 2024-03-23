@@ -7,6 +7,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///profiles.db'
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(512), nullable=False)
@@ -14,14 +15,16 @@ class Project(db.Model):
 
     def __repr__(self):
         return '<Title %r>' % self.title
-    
+
+
 @app.route('/', methods=['GET'])
 def hello():
     projects = Project.query.all()
-    if len(projects) > 0:
-        return flask.render_template('index.html', projects = projects, is_empty = False)
-    else:
-        return flask.render_template('index.html', projects = projects, is_empty = True)
+    
+    return flask.render_template('index.html', 
+                                 projects = projects, 
+                                 is_empty = len(projects) < 0)
+
 
 @app.route('/add_project', methods=['POST'])
 def add_project():
@@ -34,6 +37,7 @@ def add_project():
     
     return flask.redirect(flask.url_for('hello'))
 
+
 @app.route('/delete_projects', methods=['POST'])
 def delete_projects():
     db.drop_all()
@@ -41,14 +45,22 @@ def delete_projects():
     db.session.commit()
     return flask.redirect(flask.url_for('hello'))
 
-with app.app_context():
-    db.drop_all()
-    db.create_all()
-    db.session.add(Project(title='Video-to-audio-telegram', link='https://github.com/CYBER-NVORON/Video-to-audio-telegram'))
-    db.session.add(Project(title='TelePrinter', link='https://github.com/CYBER-NVORON/TelePrinter'))
-    db.session.add(Project(title='Music-Player', link='https://github.com/CYBER-NVORON/Music-Player'))
-    db.session.commit()
+
 
 if __name__ == "__main__":
-    print("Пример ввода нового проекта: Название - itmo-labs-python  Ссылка - https://github.com/CYBER-NVORON/itmo-labs-python")
+    
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        db.session.add(Project(title='Video-to-audio-telegram',
+                               link='https://github.com/CYBER-NVORON/Video-to-audio-telegram'))
+        db.session.add(Project(title='TelePrinter', 
+                               link='https://github.com/CYBER-NVORON/TelePrinter'))
+        db.session.add(Project(title='Music-Player', 
+                               link='https://github.com/CYBER-NVORON/Music-Player'))
+        db.session.commit()
+
+    print("Пример ввода нового проекта: Название - itmo-labs-python  \
+          Ссылка - https://github.com/CYBER-NVORON/itmo-labs-python")
+    
     app.run(host="0.0.0.0")

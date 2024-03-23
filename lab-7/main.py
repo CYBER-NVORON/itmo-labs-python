@@ -1,12 +1,13 @@
 import numpy as np
 from time import perf_counter
 import matplotlib.pyplot as plt
-from matplotlib import animation
+from matplotlib.animation import FuncAnimation
 import pylab
-import functools
+from functools import partial
 
 def base_multiply(arr_1, arr_2):
     return [x * y for x, y in zip(arr_1, arr_2)]
+
 
 def task_1():
     print("Задание 1:")
@@ -25,7 +26,8 @@ def task_1():
     print(  f"Время затраченное на перемножение через функцию NumPy: {numpy_time}",
             f"Время затраченное на перемножение через обычный перебор: {base_time}",
             f"Разница: {abs(base_time - numpy_time)}", sep="\n")
-    
+
+
 def task_2():
     print("Задание 2:")
 
@@ -45,6 +47,7 @@ def task_2():
 
     pylab.show()
 
+
 def task_3():
     print("Задание 3:")
     
@@ -61,16 +64,29 @@ def task_3():
     ax.set_zlabel('z')
     plt.show()
 
-def animation_function(num, ax, dataSet):
+
+def animation_function(num, ax, ani_array):
     ax.clear()
     
-    ax.plot3D(dataSet[0, :num+1], dataSet[1, :num+1], dataSet[2, :num+1], c='blue')
-    ax.scatter(dataSet[0, num], dataSet[1, num], dataSet[2, num], c='blue', marker='o')
-    ax.plot3D(dataSet[0, 0], dataSet[1, 0], dataSet[2, 0], c='black', marker='o')
+    ax.plot3D(ani_array[0, :num+1], 
+              ani_array[1, :num+1],
+              ani_array[2, :num+1], 
+              c='blue')
+    ax.scatter(ani_array[0,num],
+               ani_array[1, num],
+               ani_array[2, num],
+               c='blue',
+               marker='o')
+    ax.plot3D(ani_array[0, 0],
+              ani_array[1, 0],
+              ani_array[2, 0],
+              c='black',
+              marker='o')
 
     ax.set_xlim3d([-3*np.pi, 3*np.pi])
     ax.set_ylim3d([-1, 1])
     ax.set_zlim3d([-10, 10])
+
 
 def extra_task():
     print("Дополнительное задание:")
@@ -81,8 +97,14 @@ def extra_task():
 
     fig = plt.figure()
     ax = plt.axes(projection='3d')
-    line = animation.FuncAnimation(fig, functools.partial(animation_function, ax = ax, dataSet = np.array([xs, ys, zs])), interval=100, frames = len(xs))
+    
+    ani_fun = partial(animation_function,
+                      ax = ax, 
+                      ani_array = np.array([xs, ys, zs]))
+    
+    line =  FuncAnimation(fig, ani_fun, interval=100, frames = len(xs))
     plt.show()
+
 
 if __name__ == "__main__":
     print("Вариант 8")

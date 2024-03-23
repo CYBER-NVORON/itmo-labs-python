@@ -13,7 +13,7 @@ class Voice_assistant():
     
     def __init__(self) -> None:
 
-        if platform.system() == "Darwin":
+        if platform.system() == "Darwin": # MacOs
             #Тестировалось только для mac
             self.tts = pyttsx3.init('nsss')
             self.voices = self.tts.getProperty('voices')
@@ -21,12 +21,13 @@ class Voice_assistant():
             for voice in self.voices:
                 if voice.name == 'Milena':
                     self.tts.setProperty('voice', voice.id)
-            self.model = vosk.Model(os.getcwd() + '/model_small') # Лучше использовать нормальную модель, но она дольше обрабатывается и много весит =(
+            self.model = vosk.Model(os.getcwd() + '/model_small')   # Лучше использовать нормальную модель,
+                                                                    #но она дольше обрабатывается и много весит =(
             self.record = vosk.KaldiRecognizer(self.model, 16000)
-            self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+            self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1,
+                                                 rate=16000, input=True, frames_per_buffer=8000)
             self.stream.start_stream()
-
-        else:
+        else: # Linux, Windows
             #Не тестировалось
             self.tts = pyttsx3.init('sapi5')
             self.voices = self.tts.getProperty('voices')
@@ -35,7 +36,8 @@ class Voice_assistant():
                 if voice.name == 'Microsoft Zira Desktop - English (United States)':
                     self.tts.setProperty('voice', voice.id)
             self.record = vosk.KaldiRecognizer(vosk.Model(os.getcwd() + '/model_small'), 16000)
-            self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+            self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1,
+                                                 rate=16000, input=True, frames_per_buffer=8000)
             self.stream.start_stream()
 
     def listen(self):
@@ -51,6 +53,11 @@ class Voice_assistant():
         print(say)
         self.tts.say(say)
         self.tts.runAndWait()
+
+
+    def empty_data(self):
+        self.speak("Нет текста, используйте для начала команду \"Создать\"")
+
 
 if __name__ == "__main__":
     va = Voice_assistant()
@@ -69,7 +76,7 @@ if __name__ == "__main__":
             if gen_data:
                 va.speak(gen_data.text)
             else:
-                va.speak("Нет текста, используйте для начала команду \"Создать\"")
+                va.empty_data()
 
         elif text == 'сохранить':
             if gen_data:
@@ -78,7 +85,7 @@ if __name__ == "__main__":
                 
                 va.speak("Файл сохранён")
             else:
-                va.speak("Нет текста, используйте для начала команду \"Создать\"")
+                va.empty_data()
 
         elif text == 'текст':
             if gen_data:
@@ -87,7 +94,7 @@ if __name__ == "__main__":
                 
                 va.speak("Текст сохранён")
             else:
-                va.speak("Нет текста, используйте для начала команду \"Создать\"")
+                va.empty_data()
                 
         else:
             va.speak('Я вас не поняла, повторите команду')

@@ -17,6 +17,7 @@ def task_1():
 
     print("Файл сохранён!")
 
+
 def task_2():
     print("Задание 2 + модификация:")
     cap = cv2.VideoCapture(0)
@@ -56,11 +57,14 @@ def task_2():
         i += 1
 
     cap.release()
+
+
 def overlay(background, img, x, y):
     b = background
     place = b[y: y + img.shape[0], x: x + img.shape[1]]
     place[...] = place + img
     return b.astype('uint8')
+
 
 def extra():
     print("Дополнительное:")
@@ -98,7 +102,8 @@ def extra():
         i += 1
 
     cap.release()
-    
+
+
 if __name__ == "__main__":
     print("Вариант 8:")
     task_1()
