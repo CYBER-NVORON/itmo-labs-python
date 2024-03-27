@@ -19,10 +19,8 @@ class Project(db.Model):
 
 @app.route("/", methods=["GET"])
 def hello():
-    projects = Project.query.all()
-
     return flask.render_template(
-        "index.html", projects=projects, is_empty=len(projects) < 0
+        "index.html", projects_list=Project.query.all()
     )
 
 
@@ -76,4 +74,4 @@ if __name__ == "__main__":
         Ссылка - https://github.com/CYBER-NVORON/itmo-labs-python"
     )
 
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", debug=True)

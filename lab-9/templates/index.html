@@ -49,14 +49,14 @@
             </div>
             <div class = "second-column">
                 <h2>Проекты:</h2>
-                {% if not is_empty %}
-                    {% for project in projects %}
+                {% if projects_list|length > 0 %}
+                    {% for project in projects_list %}
                         <div>
                             <h3><a href = "{{ project.link }}" >{{ project.title }}</a></h3>
                         </div>
                     {% endfor %}
                 {% endif %}
-                {% if is_empty %}
+                {% if projects_list|length == 0 %}
                     <div>
                         <h3>Похоже, что проектов нет(</h3>
                     </div>
