@@ -5,6 +5,7 @@ from matplotlib.animation import FuncAnimation
 import pylab
 from functools import partial
 
+
 def base_multiply(arr_1, arr_2):
     return [x * y for x, y in zip(arr_1, arr_2)]
 
@@ -23,24 +24,24 @@ def task_1():
     base_multiply(arr_1, arr_2)
     base_time = perf_counter() - base_start
 
-    print(  f"Время затраченное на перемножение через функцию NumPy: {numpy_time}",
-            f"Время затраченное на перемножение через обычный перебор: {base_time}",
-            f"Разница: {abs(base_time - numpy_time)}", sep="\n")
+    print(f"Время затраченное на перемножение через функцию NumPy: {numpy_time}",
+          f"Время затраченное на перемножение через обычный перебор: {base_time}",
+          f"Разница: {abs(base_time - numpy_time)}", sep="\n")
 
 
 def task_2():
     print("Задание 2:")
 
-    arr = np.genfromtxt('data2.csv', delimiter = ',')
+    arr = np.genfromtxt('data2.csv', delimiter=',')
     arr = [arr[i][3] for i in range(len(arr))]
     chloramines = arr[1:]
 
-    pylab.subplot (2, 2, 1)
+    pylab.subplot(2, 2, 1)
     pylab.hist(chloramines, 25)
-    pylab.title ("Гистограма")
+    pylab.title("Гистограма")
 
-    pylab.subplot (2, 2, 2)
-    pylab.hist(chloramines, 25, density = True)
+    pylab.subplot(2, 2, 2)
+    pylab.hist(chloramines, 25, density=True)
     pylab.title("Нормализованная гистограмма")
 
     print(f"Среднеквадратичное отклонение: {np.std(chloramines)}")
@@ -65,21 +66,23 @@ def task_3():
     plt.show()
 
 
-def animation_function(num, ax, ani_array):
+def animation_function(num, ax, dataset):
     ax.clear()
     
-    ax.plot3D(ani_array[0, :num+1], 
-              ani_array[1, :num+1],
-              ani_array[2, :num+1], 
+    ax.plot3D(dataset[0, :num+1],
+              dataset[1, :num+1],
+              dataset[2, :num+1], 
               c='blue')
-    ax.scatter(ani_array[0,num],
-               ani_array[1, num],
-               ani_array[2, num],
+    
+    ax.scatter(dataset[0, num],
+               dataset[1, num],
+               dataset[2, num],
                c='blue',
                marker='o')
-    ax.plot3D(ani_array[0, 0],
-              ani_array[1, 0],
-              ani_array[2, 0],
+    
+    ax.plot3D(dataset[0, 0],
+              dataset[1, 0],
+              dataset[2, 0],
               c='black',
               marker='o')
 
@@ -99,10 +102,11 @@ def extra_task():
     ax = plt.axes(projection='3d')
     
     ani_fun = partial(animation_function,
-                      ax = ax, 
-                      ani_array = np.array([xs, ys, zs]))
+                      ax=ax,
+                      dataset=np.array([xs, ys, zs]))
     
-    line =  FuncAnimation(fig, ani_fun, interval=100, frames = len(xs))
+    line=FuncAnimation(fig, ani_fun, interval=100, frames=len(xs))
+
     plt.show()
 
 
