@@ -66,23 +66,23 @@ def task_3():
     plt.show()
 
 
-def animation_function(num, ax, dataset):
+def animation_function(num, ax, data_set):
     ax.clear()
     
-    ax.plot3D(dataset[0, :num+1],
-              dataset[1, :num+1],
-              dataset[2, :num+1], 
+    ax.plot3D(data_set[0, :num+1],
+              data_set[1, :num+1],
+              data_set[2, :num+1], 
               c='blue')
     
-    ax.scatter(dataset[0, num],
-               dataset[1, num],
-               dataset[2, num],
+    ax.scatter(data_set[0, num],
+               data_set[1, num],
+               data_set[2, num],
                c='blue',
                marker='o')
     
-    ax.plot3D(dataset[0, 0],
-              dataset[1, 0],
-              dataset[2, 0],
+    ax.plot3D(data_set[0, 0],
+              data_set[1, 0],
+              data_set[2, 0],
               c='black',
               marker='o')
 
@@ -103,7 +103,7 @@ def extra_task():
     
     ani_fun = partial(animation_function,
                       ax=ax,
-                      dataset=np.array([xs, ys, zs]))
+                      data_set=np.array([xs, ys, zs]))
     
     line=FuncAnimation(fig, ani_fun, interval=100, frames=len(xs))
 
