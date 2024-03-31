@@ -13,8 +13,8 @@ def base_multiply(arr_1, arr_2):
 def task_1():
     print("Задание 1:")
 
-    arr_1 = [np.random.randint(0, 1_000_000) for _ in range(1_000_000)]
-    arr_2 = np.array([np.random.randint(0, 1_000_000) for _ in range(1_000_000)])
+    arr_1 = [np.random.randint(0, 1000000) for _ in range(1000000)]
+    arr_2 = np.array([np.random.randint(0, 1000000) for _ in range(1000000)])
     
     numpy_start = perf_counter()
     np.multiply(arr_1, arr_2)
@@ -24,8 +24,8 @@ def task_1():
     base_multiply(arr_1, arr_2)
     base_time = perf_counter() - base_start
 
-    print(f"Время затраченное на перемножение через функцию NumPy: {numpy_time}",
-          f"Время затраченное на перемножение через обычный перебор: {base_time}",
+    print(f"Время перемножения через функцию NumPy: {numpy_time}",
+          f"Время перемножения через обычный перебор: {base_time}",
           f"Разница: {abs(base_time - numpy_time)}", sep="\n")
 
 
@@ -105,7 +105,7 @@ def extra_task():
                       ax=ax,
                       data_set=np.array([xs, ys, zs]))
     
-    line=FuncAnimation(fig, ani_fun, interval=100, frames=len(xs))
+    line = FuncAnimation(fig, ani_fun, interval=100, frames=len(xs))
 
     plt.show()
 
