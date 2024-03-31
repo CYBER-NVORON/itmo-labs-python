@@ -1,20 +1,20 @@
-import cv2
-import numpy as np
 import time
+import numpy as np
+import cv2
 
 
 def task_1():
 
     print("Задание 1:")
 
-    image = cv2.imread('variant-8.jpg')
+    image = cv2.imread("variant-8.jpg")
 
     center = image.shape
     w, h = 400, 400
-    x = (center[1] - w)//2
-    y = (center[0] - h)//2
+    x = (center[1] - w) // 2
+    y = (center[0] - h) // 2
 
-    crop_img = image[y:y+h, x:x+w]
+    crop_img = image[y: y + h, x: x + w]
 
     cv2.imwrite("result.jpg", crop_img)
 
@@ -29,32 +29,32 @@ def task_2():
 
     while True:
         flag, frame = cap.read()
-        
+
         if not flag:
             break
 
         h, w = frame.shape[:2]
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        h_min = np.array((113, 100, 100), np.uint8) #Эти значения - нижний и верхний порог нужного цвета
-        h_max = np.array((133, 255, 255), np.uint8) #Для этого надо сделать скриншот и пепеткой вытащить RGB расцветку и засунуть в picker.py
+        h_min = np.array((113, 100, 100), np.uint8)
+        h_max = np.array((133, 255, 255), np.uint8)
         thresh = cv2.inRange(hsv, h_min, h_max)
         moments = cv2.moments(thresh, 1)
-        M01 = moments["m01"]
-        M10 = moments["m10"]
+        m01 = moments["m01"]
+        m10 = moments["m10"]
         area = moments["m00"]
-        
+
         if area > 100:
 
-            x = int(M10/area)
-            y = int(M01/area)
+            x = int(m10 / area)
+            y = int(m01 / area)
 
             cv2.line(frame, (x, 0), (x, h), (0, 255, 255), 5)
             cv2.line(frame, (0, y), (w, y), (0, 255, 255), 5)
 
-        cv2.imshow('frame', frame)
-        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv2.imshow("frame", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
         time.sleep(0.001)
@@ -63,41 +63,42 @@ def task_2():
 
 
 def overlay(background, img, x, y):
-    b = background
-    place = b[y: y + img.shape[0], x: x + img.shape[1]]
+
+    place = background[y: y + img.shape[0], x: x + img.shape[1]]
     place[...] = place + img
-    return b.astype('uint8')
+    return background.astype("uint8")
 
 
 def extra():
+
     print("Дополнительное:")
     cap = cv2.VideoCapture(0)
-    fly = cv2.imread('fly64.png')
+    fly = cv2.imread("fly64.png")
     while True:
         flag, frame = cap.read()
-        
+
         if not flag:
             break
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        h_min = np.array((113, 100, 100), np.uint8) #Эти значения - нижний и верхний порог нужного цвета
-        h_max = np.array((133, 255, 255), np.uint8) #Для этого надо сделать скриншот и пепеткой вытащить RGB расцветку и засунуть в picker.py
+        h_min = np.array((113, 100, 100), np.uint8)
+        h_max = np.array((133, 255, 255), np.uint8)  # Use picker.py
         thresh = cv2.inRange(hsv, h_min, h_max)
         moments = cv2.moments(thresh, 1)
-        M01 = moments["m01"]
-        M10 = moments["m10"]
+        m01 = moments["m01"]
+        m10 = moments["m10"]
         area = moments["m00"]
-        
+
         if area > 100:
 
-            x = int(M10/area - 32)
-            y = int(M01/area - 32)
+            x = int(m10 / area - 32)
+            y = int(m01 / area - 32)
 
             overlay(frame, fly, x, y)
 
-        cv2.imshow('frame', frame)
-        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        cv2.imshow("frame", frame)
+
+        if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
         time.sleep(0.001)
