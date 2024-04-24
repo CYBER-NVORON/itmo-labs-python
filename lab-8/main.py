@@ -46,8 +46,9 @@ def task_2():
 
         if area > 100:
 
-            x = int(m10 / area)
-            y = int(m01 / area)
+            x = max(0, int(m10 / area))
+            y = max(0, int(m01 / area))
+
 
             cv2.line(frame, (x, 0), (x, h), (0, 255, 255), 5)
             cv2.line(frame, (0, y), (w, y), (0, 255, 255), 5)
@@ -91,8 +92,8 @@ def extra():
 
         if area > 100:
 
-            x = int(m10 / area - 32)
-            y = int(m01 / area - 32)
+            x = max(0, int(m10 / area - 32))
+            y = max(0, int(m01 / area - 32))
 
             overlay(frame, fly, x, y)
 

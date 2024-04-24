@@ -22,7 +22,7 @@ class Voice_assistant():
                 if voice.name == 'Milena':
                     self.tts.setProperty('voice', voice.id)
             self.model = vosk.Model(os.getcwd() + '/model_small')   # Лучше использовать нормальную модель,
-                                                                    #но она дольше обрабатывается и много весит =(
+                                                                    # но она дольше обрабатывается и много весит =(
             self.record = vosk.KaldiRecognizer(self.model, 16000)
             self.stream = pyaudio.PyAudio().open(format=pyaudio.paInt16, channels=1,
                                                  rate=16000, input=True, frames_per_buffer=8000)
@@ -71,7 +71,6 @@ if __name__ == "__main__":
         elif text == 'создать':
             gen_data = requests.get("https://loripsum.net/api/10/short/headers")
             va.speak('Создан текст')
-        
         elif text == 'прочесть':
             if gen_data:
                 va.speak(gen_data.text)
@@ -82,7 +81,6 @@ if __name__ == "__main__":
             if gen_data:
                 with open("download.html", "wb") as htmlFile:
                     htmlFile.write(gen_data.content)
-                
                 va.speak("Файл сохранён")
             else:
                 va.empty_data()
@@ -91,10 +89,8 @@ if __name__ == "__main__":
             if gen_data:
                 with open("text.txt", "w") as txtFile:
                     txtFile.write(gen_data.text)
-                
                 va.speak("Текст сохранён")
             else:
                 va.empty_data()
-                
         else:
             va.speak('Я вас не поняла, повторите команду')
