@@ -50,13 +50,11 @@ class Voice_assistant():
 
 
     def speak(self, say):
+        self.stream.stop_stream()
         print(say)
         self.tts.say(say)
         self.tts.runAndWait()
-
-
-    def empty_data(self):
-        self.speak("Нет текста, используйте для начала команду \"Создать\"")
+        self.stream.start_stream()
 
 
 if __name__ == "__main__":
@@ -71,26 +69,18 @@ if __name__ == "__main__":
         elif text == 'создать':
             gen_data = requests.get("https://loripsum.net/api/10/short/headers")
             va.speak('Создан текст')
-        elif text == 'прочесть':
-            if gen_data:
+        elif gen_data:
+            if text == 'прочесть':
                 va.speak(gen_data.text)
-            else:
-                va.empty_data()
-
-        elif text == 'сохранить':
-            if gen_data:
-                with open("download.html", "wb") as htmlFile:
-                    htmlFile.write(gen_data.content)
+            elif text == 'сохранить':
+                with open("download.html", "wb") as html_file:
+                    html_file.write(gen_data.content)
                 va.speak("Файл сохранён")
-            else:
-                va.empty_data()
-
-        elif text == 'текст':
-            if gen_data:
-                with open("text.txt", "w") as txtFile:
-                    txtFile.write(gen_data.text)
+            elif text == 'текст':
+                with open("text.txt", "w") as txt_file:
+                    txt_file.write(gen_data.text)
                 va.speak("Текст сохранён")
-            else:
-                va.empty_data()
+        elif not gen_data:
+            va.speak("Нет текста, используйте для начала команду \"Создать\"")
         else:
             va.speak('Я вас не поняла, повторите команду')

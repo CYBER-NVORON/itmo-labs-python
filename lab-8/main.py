@@ -46,12 +46,12 @@ def task_2():
 
         if area > 100:
 
-            x = max(0, int(m10 / area))
-            y = max(0, int(m01 / area))
+            x = int(m10 / area)
+            y = int(m01 / area)
 
-
-            cv2.line(frame, (x, 0), (x, h), (0, 255, 255), 5)
-            cv2.line(frame, (0, y), (w, y), (0, 255, 255), 5)
+            if (0 < x < w) and (0 < y < h):
+                cv2.line(frame, (x, 0), (x, h), (0, 255, 255), 5)
+                cv2.line(frame, (0, y), (w, y), (0, 255, 255), 5)
 
         cv2.imshow("frame", frame)
 
@@ -66,7 +66,8 @@ def task_2():
 def overlay(background, img, x, y):
 
     place = background[y: y + img.shape[0], x: x + img.shape[1]]
-    place[...] = place + img
+    if place.shape == img.shape:
+        place[...] = place + img
     return background.astype("uint8")
 
 
@@ -81,6 +82,8 @@ def extra():
         if not flag:
             break
 
+        h, w = frame.shape[:2]
+
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         h_min = np.array((113, 100, 100), np.uint8)
         h_max = np.array((133, 255, 255), np.uint8)  # Use picker.py
@@ -92,10 +95,11 @@ def extra():
 
         if area > 100:
 
-            x = max(0, int(m10 / area - 32))
-            y = max(0, int(m01 / area - 32))
+            x = int(m10 / area - 32)
+            y = int(m01 / area - 32)
 
-            overlay(frame, fly, x, y)
+            if (0 < x < w) and (0 < y < h):
+                overlay(frame, fly, x, y)
 
         cv2.imshow("frame", frame)
 
