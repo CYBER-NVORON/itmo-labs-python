@@ -40,7 +40,7 @@ class VoiceAssistant():
                               frames_per_buffer=8000)
         self.stream.start_stream()
         self.speak("Вас приветствует голосовой ассистент.")
-        self.speak("Вот мои комманды:")
+        self.speak("Вот мои команды:")
         for command in self.commands:
             print(f"{command['id']+1}. \"{command['text']}\"")
 
